@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node{
+    int data;
+    struct Node *next;
+    struct Node *prev;
+};
+typedef struct Node node;
+node *head=NULL;
+void insert(int d){
+    node*newnode=(node *)malloc(sizeof(node));
+    newnode->prev=NULL;
+    newnode->data=d;
+    newnode->next=NULL;
+    if(head==NULL){
+        head=newnode;
+    }
+    else{
+        node*temp=head;
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+        temp->next=newnode;
+        newnode->prev=temp;
+    }
+}
+void insertbeg(int d){
+    node *newnode=(node*)malloc(sizeof(node));
+    newnode->data=d;
+    newnode->next=head;
+    head->prev=newnode;
+    newnode->prev=NULL;
+    head=newnode;
+}
+void insertafter(int x,int d){
+    node* newnode=(node*)malloc(sizeof(node));
+    newnode->data=d;
+    newnode->next=NULL;
+    newnode->prev=NULL;
+    if(head==NULL){
+        printf("\n Empty");
+    return;}
+    node *temp=head;
+    while(temp->data!=x){
+        temp=temp->next;
+    }
+    newnode->next=temp->next;
+    temp->next->prev=newnode;
+    temp->next=newnode;
+    newnode->prev=temp;
+}
+void insertbefore(int x,int d){
+    node *newnode=(node*)malloc(sizeof(node));
+    newnode->data=d;
+    newnode->next=NULL;
+    newnode->prev=NULL;
+    
+    if(head==NULL){
+        printf("\n Empty");
+    }
+    else{
+        node*temp=head;
+        node*prev=NULL;
+        while(temp->data!=x){
+            prev=temp;
+            temp=temp->next;
+        }
+        newnode->next=temp;
+        prev->next=newnode;
+        newnode->prev=prev;
+        temp->prev=newnode;
+    }
+}
+void insertpos(int p,int d){
+    node*newnode=(node*)malloc(sizeof(node));
+    newnode->data=d;
+    newnode->next=NULL;
+    newnode->prev=NULL;
+    int current=0;
+    if(head==NULL){
+        printf("\n Empty");
+    }
+    else{
+        node*temp=head;
+        node*prev=NULL;
+        if(p==0){
+            insertbeg(d);
+        return;}
+        while(temp!=NULL && current!= p) {
+            prev = temp;
+            temp = temp->next;
+            current++;
+        }
+        
+        newnode->prev = prev;
+        newnode->next = temp;
+        temp->prev = newnode;
+        prev->next = newnode;
+    }
+}
+void display(){
+    node *temp=head;
+    while(temp!=NULL){
+        printf("%d->",temp->data);
+        temp=temp->next;
+    }
+    printf("NULL");
+}
+int main() {
+    insert(1);
+    insert(2);
+    insertbeg(3);
+    insertafter(1,4);
+    insertbefore(4,5);
+    insertpos(2,6);
+    display();
+    return 0;
+}
